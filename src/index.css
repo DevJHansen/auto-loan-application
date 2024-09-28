@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  background-color: black;
+  color: 'white';
+}
+
+.scroll-lock {
+  overflow: hidden !important;
+}
+
+@layer utilities {
+  .whitespace-no-wrap {
+    white-space: nowrap;
+  }
+}
+
+@layer components {
+  .button {
+    @apply bg-primary border-primary border-2 cursor-pointer text-white text-center font-bold py-2 px-4 rounded-md min-w-[120px] flex items-center justify-center;
+  }
+
+  .button-outline {
+    @apply border-primary cursor-pointer border-2 text-center text-primary font-bold py-2 px-4 rounded-md min-w-[120px] flex items-center justify-center;
+  }
+
+  .button-outline-alternative {
+    @apply flex items-center space-x-2 px-4 py-2 border-gray-300 border-[1px] hover:shadow-md hover:shadow-accent hover:border-accent;
+  }
+
+  .form-input {
+    @apply border-accent border-[2px] w-full px-4 py-2 text-white leading-tight focus:outline-none rounded-md bg-background h-10;
+  }
+
+  .form-input-small {
+    @apply border-accent border-[1px] h-[24px] w-full px-4 py-2 text-white leading-tight focus:outline-none rounded-md bg-background;
+  }
+
+  .input-disabled {
+    @apply bg-transparent border-[2px];
+  }
+
+  .table-heading {
+    @apply px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-primary tracking-wider whitespace-no-wrap;
+  }
+
+  .table-heading-fixed {
+    @apply sticky top-0 bg-background z-10;
+  }
+
+  .table-div {
+    @apply px-6 py-4 whitespace-no-wrap;
+  }
+
+  .table-row {
+    @apply border-b border-gray-300 hover:bg-white flex items-center justify-center;
+  }
+
+  .clickable-icon {
+    @apply text-primary cursor-pointer hover:text-accent hover:bg-background rounded-full p-2;
+  }
+
+  .sidebar-spacing {
+    @apply md:pl-24 md:pr-12 pl-16 pr-8;
+  }
+
+  .pagination-button {
+    @apply cursor-pointer px-3 py-2 mx-1 leading-tight text-gray-400 bg-white rounded;
+  }
+
+  .pagination-button-hidden {
+    @apply cursor-not-allowed opacity-50 hidden;
+  }
+}
+
+@keyframes move-right-left {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes move-left-right {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-80px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.loading-div-1 {
+  animation: move-right-left 1s infinite;
+}
+
+.loading-div-2 {
+  animation: move-left-right 1s infinite;
+}
