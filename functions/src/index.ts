@@ -21,6 +21,12 @@ import {
   isOlderThanThreeMonths,
 } from './utils/general';
 import { isUserAuthorized } from './utils/authUtils';
+import {
+  BANK_STATEMENT_ID,
+  CLASSIFIER_ID,
+  NAMIBIAN_ID_ID,
+  PAYSLIP_ID,
+} from './constants/processors';
 
 const client = new DocumentProcessorServiceClient();
 
@@ -43,11 +49,8 @@ export const extractBankStatement = onRequest(config, async (req, res) => {
         return;
       }
 
-      const processorId =
-        'projects/245752770740/locations/us/processors/6364fd782c4ce406';
-
       const request = {
-        name: processorId,
+        name: BANK_STATEMENT_ID,
         rawDocument: {
           content: req.body.documentBase64,
           mimeType: req.body.mimeType,
@@ -80,12 +83,8 @@ export const extractPayslip = onRequest(config, async (req, res) => {
         return;
       }
 
-      const processorId =
-        'projects/245752770740/locations/us/processors/41cc01dee31ccff1';
-      // 'projects/245752770740/locations/us/processors/4d029d815c608359';
-
       const request = {
-        name: processorId,
+        name: PAYSLIP_ID,
         rawDocument: {
           content: req.body.documentBase64,
           mimeType: req.body.mimeType,
@@ -116,11 +115,8 @@ export const extractIdDocument = onRequest(config, async (req, res) => {
         return;
       }
 
-      const processorId =
-        'projects/245752770740/locations/us/processors/57881faf756a36f4';
-
       const request = {
-        name: processorId,
+        name: NAMIBIAN_ID_ID,
         rawDocument: {
           content: req.body.documentBase64,
           mimeType: req.body.mimeType,
@@ -151,11 +147,8 @@ export const classifyDocument = onRequest(config, async (req, res) => {
         return;
       }
 
-      const processorId =
-        'projects/245752770740/locations/us/processors/9cce90838b413553';
-
       const request = {
-        name: processorId,
+        name: CLASSIFIER_ID,
         rawDocument: {
           content: req.body.documentBase64,
           mimeType: req.body.mimeType,

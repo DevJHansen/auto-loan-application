@@ -3,17 +3,19 @@ import { google } from '@google-cloud/documentai/build/protos/protos';
 import { parseNamibianIdResponse } from './namibianIdUtils';
 import { parsePayslipResponse } from './payslipUtils';
 import { parseBankStatementResponse } from './bankStatementUtils';
+import {
+  BANK_STATEMENT_ID,
+  NAMIBIAN_ID_ID,
+  PAYSLIP_ID,
+} from '../constants/processors';
 
 export const processNamibianId = async (
   client: DocumentProcessorServiceClient,
   uri: string,
   mimeType: string
 ) => {
-  const processorId =
-    'projects/245752770740/locations/us/processors/57881faf756a36f4';
-
   const request: google.cloud.documentai.v1.IProcessRequest = {
-    name: processorId,
+    name: NAMIBIAN_ID_ID,
     gcsDocument: {
       gcsUri: uri,
       mimeType,
@@ -40,11 +42,8 @@ export const processPayslip = async (
   uri: string,
   mimeType: string
 ) => {
-  const processorId =
-    'projects/245752770740/locations/us/processors/41cc01dee31ccff1';
-
   const request: google.cloud.documentai.v1.IProcessRequest = {
-    name: processorId,
+    name: PAYSLIP_ID,
     gcsDocument: {
       gcsUri: uri,
       mimeType,
@@ -71,11 +70,8 @@ export const processBankStatement = async (
   uri: string,
   mimeType: string
 ) => {
-  const processorId =
-    'projects/245752770740/locations/us/processors/6364fd782c4ce406';
-
   const request: google.cloud.documentai.v1.IProcessRequest = {
-    name: processorId,
+    name: BANK_STATEMENT_ID,
     gcsDocument: {
       gcsUri: uri,
       mimeType,
