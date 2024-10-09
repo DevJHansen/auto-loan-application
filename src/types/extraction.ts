@@ -23,6 +23,8 @@ export interface ParsedBankStatement {
     confidence: number;
   };
   tableItems: TableItem[];
+  totalIncome: number;
+  totalExpenses: number;
 }
 
 export interface MondayTableValue {

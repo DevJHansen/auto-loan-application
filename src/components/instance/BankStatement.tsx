@@ -10,6 +10,7 @@ import { EXTRACTION_INSTANCE_COLLECTION } from '../../constants/firebaseConstant
 import { useRecoilState } from 'recoil';
 import { extractionInstanceState } from './recoil';
 import { useAddToast } from '../../hooks/toastHooks';
+import { MdAdd, MdDelete, MdExpandMore, MdExpandLess } from 'react-icons/md';
 
 interface Props {
   instance: ExtractionInstance;
@@ -23,6 +24,11 @@ export const BankStatement = ({ instance }: Props) => {
   const [loading, setLoading] = useState(false);
   const [, setInstance] = useRecoilState(extractionInstanceState);
   const addToast = useAddToast();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchImageUrl = async () => {
@@ -87,6 +93,27 @@ export const BankStatement = ({ instance }: Props) => {
       console.error(error);
       setLoading(false);
     }
+  };
+
+  const handleAddTableItem = () =>
+    setFormState({
+      ...formState,
+      tableItems: [
+        {
+          description: '',
+          date: '',
+          income: 0,
+          expense: 0,
+        },
+        ...formState.tableItems,
+      ],
+    });
+
+  const handleRemoveTableItem = (index: number) => {
+    setFormState({
+      ...formState,
+      tableItems: formState.tableItems.filter((_, i) => i !== index),
+    });
   };
 
   return (
@@ -170,56 +197,111 @@ export const BankStatement = ({ instance }: Props) => {
                   }
                 />
               </div>
-              <p className="mb-4 text-gray-400 font-bold text-sm pl-2">
-                <u>Table Items</u>
-              </p>
-              <div>
-                {formState.tableItems.map((item, i) => (
-                  <div key={i} className="border-t-[1px] pt-4 pl-2">
-                    <p className="text-xs mb-4 text-gray-400 font-medium">
-                      <u>{i + 1}.</u>
-                    </p>
-                    <div className="grid grid-cols-2 space-x-2">
-                      <FormInput
-                        id={`date-${i}`}
-                        label="Date"
-                        type="date"
-                        value={item.date}
-                        onChange={(value) => updateTableItem(i, 'date', value)}
-                      />
-                      <FormInput
-                        id={`description-${i}`}
-                        label="Description"
-                        type="text"
-                        value={item.description}
-                        onChange={(value) =>
-                          updateTableItem(i, 'description', value)
-                        }
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 space-x-2">
-                      <FormInput
-                        id={`income-${i}`}
-                        label="Income"
-                        type="number"
-                        value={item.income}
-                        onChange={(value) =>
-                          updateTableItem(i, 'income', value)
-                        }
-                      />
-                      <FormInput
-                        id={`expense-${i}`}
-                        label="Expense"
-                        type="number"
-                        value={item.expense}
-                        onChange={(value) =>
-                          updateTableItem(i, 'expense', value)
-                        }
-                      />
-                    </div>
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 space-x-2 pl-2">
+                <FormInput
+                  id="totalIncome"
+                  label="Total Income"
+                  type="number"
+                  value={formState.totalIncome}
+                  onChange={(value) =>
+                    setFormState({
+                      ...formState,
+                      totalIncome: parseFloat(value),
+                    })
+                  }
+                />
+                <FormInput
+                  id="totalExpenses"
+                  label="Total Expenses"
+                  type="number"
+                  value={formState.totalExpenses}
+                  onChange={(value) =>
+                    setFormState({
+                      ...formState,
+                      totalExpenses: parseFloat(value),
+                    })
+                  }
+                />
               </div>
+              <div className="my-4 flex items-center">
+                <p className="text-gray-400 font-bold text-md pl-2 mr-2">
+                  <u>Table Items</u>
+                </p>
+                <MdAdd
+                  size={16}
+                  className="text-white border-[1px] border-white rounded hover:bg-primary hover:border-primary cursor-pointer"
+                  onClick={handleAddTableItem}
+                />
+              </div>
+              <div
+                className="cursor-pointer text-white"
+                onClick={toggleCollapse}
+              >
+                {isCollapsed ? (
+                  <MdExpandMore size={24} className="mb-2" />
+                ) : (
+                  <MdExpandLess size={24} className="mb-2" />
+                )}
+              </div>
+              {!isCollapsed && (
+                <div>
+                  {formState.tableItems.map((item, i) => (
+                    <div key={i} className="border-t-[1px] pt-4 pl-2">
+                      <div className="mb-4 flex items-center">
+                        <p className="text-xs text-gray-400 font-medium mr-2">
+                          <u>{i + 1}.</u>
+                        </p>
+                        <MdDelete
+                          size={16}
+                          className="text-white border-[1px] border-white rounded hover:bg-primary hover:border-primary cursor-pointer"
+                          onClick={() => handleRemoveTableItem(i)}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 space-x-2">
+                        <FormInput
+                          id={`date-${i}`}
+                          label="Date"
+                          type="date"
+                          value={item.date}
+                          onChange={(value) =>
+                            updateTableItem(i, 'date', value)
+                          }
+                        />
+                        <FormInput
+                          id={`description-${i}`}
+                          label="Description"
+                          type="text"
+                          value={item.description}
+                          onChange={(value) =>
+                            updateTableItem(i, 'description', value)
+                          }
+                          placeholder="E.g. Salary"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 space-x-2">
+                        <FormInput
+                          id={`income-${i}`}
+                          label="Income"
+                          type="number"
+                          value={item.income}
+                          onChange={(value) =>
+                            updateTableItem(i, 'income', value)
+                          }
+                        />
+                        <FormInput
+                          id={`expense-${i}`}
+                          label="Expense"
+                          type="number"
+                          value={item.expense}
+                          onChange={(value) =>
+                            updateTableItem(i, 'expense', value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-2 space-x-2 pl-2">
               <Button

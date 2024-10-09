@@ -55,19 +55,19 @@ const PDFViewer = ({ gcsUri }: Props) => {
           </Document>
           <div>
             {numPages > 1 && (
-              <div className="mt-6 px-2 flex">
+              <div className="mt-6 px-2 flex text-white">
                 {pageNumber > 1 && (
                   <MdArrowLeft
                     onClick={() => setPageNumber(pageNumber - 1)}
                     size={24}
-                    className="mr-2 border-[1px] border-black rounded-full cursor-pointer"
+                    className="mr-2 border-[1px] border-white rounded-full cursor-pointer"
                   />
                 )}
                 {pageNumber < numPages && (
                   <MdArrowRight
                     onClick={() => setPageNumber(pageNumber + 1)}
                     size={24}
-                    className="border-[1px] border-black rounded-full cursor-pointer"
+                    className="border-[1px] border-white rounded-full cursor-pointer"
                   />
                 )}
                 <p className="ml-2">

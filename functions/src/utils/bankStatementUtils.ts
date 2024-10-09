@@ -54,6 +54,15 @@ export const parseBankStatementResponse = (
     };
   });
 
+  const totals = tableItems.reduce(
+    (totals, item) => {
+      totals.totalIncome += item.income;
+      totals.totalExpense += item.expense;
+      return totals;
+    },
+    { totalIncome: 0, totalExpense: 0 }
+  );
+
   return {
     openingBalance: {
       amount: parseMoneyText(openingBalanceRes?.mentionText ?? '0'),
@@ -72,5 +81,7 @@ export const parseBankStatementResponse = (
       confidence: statementEndDateRes.confidence ?? 0,
     },
     tableItems,
+    totalExpenses: totals.totalExpense,
+    totalIncome: totals.totalIncome,
   };
 };
